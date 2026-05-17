@@ -62,13 +62,13 @@
                 <small>Seller: {{ product.seller.full_name }}</small>
             </div>
 
-            <form method="post" action="#" class="add-to-cart-form">
+            <form method="post" action="{% url 'cart:add' product.id %}" class="add-to-cart-form">
                 {% csrf_token %}
                 <div class="qty-wrap">
                     <label for="qty">Quantity:</label>
                     <input type="number" name="quantity" id="qty" value="1" min="1"
-                           {% if product.in_stock %}max="{{ product.inventory.quantity }}"{% endif %}
-                           class="form-control">
+                        {% if product.in_stock %}max="{{ product.inventory.quantity }}"{% endif %}
+                        class="form-control">
                 </div>
                 <button type="submit" class="btn btn-primary btn-block"
                         {% if not product.in_stock %}disabled{% endif %}>

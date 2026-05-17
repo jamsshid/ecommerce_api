@@ -137,7 +137,6 @@ def logout_view(request):
     messages.info(request, "You have been logged out")
     return redirect("users:login")
 
-
 @login_required
 def profile_view(request):
     if request.method == "POST":
@@ -149,4 +148,15 @@ def profile_view(request):
     else:
         form = ProfileForm(instance=request.user)
 
-    return render(request, "users/profile.html", {"form": form})
+    orders = (
+        request.user.orders
+        .select_related("payment")
+        .prefetch_related("items")
+        .order_by("-created_at")[:20]
+    )
+
+    return render(
+        request,
+        "users/profile.html",
+        {"form": form, "orders": orders},
+    )
