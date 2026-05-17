@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <h1>My profile</h1>
+
+    <div class="profile-grid">
+        <aside class="profile-sidebar">
+            <div class="avatar-wrap">
+                {% if user.avatar %}
+                    <img src="{{ user.avatar.url }}" alt="{{ user.full_name }}" class="avatar-lg">
+                {% else %}
+                    <div class="avatar-placeholder">
+                        {{ user.first_name|first|upper }}{{ user.last_name|first|upper }}
+                    </div>
+                {% endif %}
+            </div>
+            <h3>{{ user.full_name }}</h3>
+            <p class="muted">{{ user.email }}</p>
+            <span class="badge badge-{{ user.role }}">{{ user.get_role_display }}</span>
+        </aside>
+
+        <section class="profile-content">
+            <h2>Edit information</h2>
+            <form method="post" enctype="multipart/form-data" class="profile-form">
+                {% csrf_token %}
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="{{ form.first_name.id_for_label }}">First name</label>
+                        {{ form.first_name }}
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ form.last_name.id_for_label }}">Last name</label>
+                        {{ form.last_name }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.phone.id_for_label }}">Phone</label>
+                    {{ form.phone }}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.avatar.id_for_label }}">Avatar</label>
+                    {{ form.avatar }}
+                </div>
+
+                <button type="submit" class="btn btn-primary">Save changes</button>
+            </form>
+        </section>
+    </div>
+</div>
+{% endblock %}
