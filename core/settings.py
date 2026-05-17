@@ -26,12 +26,21 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
     "django_filters",
+    "apps.common",
     "apps.users",
-    # "products",
-    # "cart",
-    # "payment",
+    "apps.products",
+    "apps.cart",
 ]
 AUTH_USER_MODEL = "users.CustomUser"
+
+STORAGES = {
+    "default": {
+        "BACKEND": "apps.common.storage.DatabaseStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -97,6 +106,14 @@ USE_I18N = True
 
 USE_TZ = True
 
+# Stripe
+STRIPE_PUBLISHABLE_KEY = os.getenv("STRIPE_PUBLISHABLE_KEY", "")
+STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY", "")
+STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET", "")
+STRIPE_CURRENCY = "usd"
+
+# Site URL — used in Stripe success/cancel redirect URLs
+SITE_URL = os.getenv("SITE_URL", "http://127.0.0.1:8000")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
@@ -105,7 +122,7 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
+# MEDIA_ROOT = BASE_DIR / "media"
 
 # Auth redirect
 LOGIN_URL = "users:login"

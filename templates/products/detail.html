@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+<div class="product-detail">
+    <div class="breadcrumb">
+        <a href="{% url 'products:list' %}">Products</a> /
+        <a href="?category={{ product.category.slug }}">{{ product.category.name }}</a> /
+        <span>{{ product.name }}</span>
+    </div>
+
+    <div class="detail-grid">
+        <div class="detail-gallery">
+            {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="gallery-main" id="mainImage">
+            {% else %}
+                <div class="image-placeholder gallery-main">No image</div>
+            {% endif %}
+
+            {% if product.images.all %}
+                <div class="gallery-thumbs">
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}"
+                             onclick="document.getElementById('mainImage').src=this.src">
+                    {% endif %}
+                    {% for img in product.images.all %}
+                        <img src="{{ img.image.url }}" alt="{{ img.alt_text|default:product.name }}"
+                             onclick="document.getElementById('mainImage').src=this.src">
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="detail-info">
+            <p class="product-category">{{ product.category.name }}</p>
+            <h1>{{ product.name }}</h1>
+
+            <div class="detail-price">
+                {% if product.has_discount %}
+                    <span class="price-current">${{ product.current_price }}</span>
+                    <span class="price-old">${{ product.price }}</span>
+                    <span class="badge-discount">-{{ product.discount_percent }}%</span>
+                {% else %}
+                    <span class="price-current">${{ product.price }}</span>
+                {% endif %}
+            </div>
+
+            <div class="stock-status">
+                {% if product.in_stock %}
+                    <span class="status-in">✓ In stock ({{ product.inventory.quantity }} available)</span>
+                {% else %}
+                    <span class="status-out">✗ Out of stock</span>
+                {% endif %}
+            </div>
+
+            <div class="detail-description">
+                <h3>Description</h3>
+                <p>{{ product.description|linebreaks }}</p>
+            </div>
+
+            <div class="detail-meta">
+                <small>Seller: {{ product.seller.full_name }}</small>
+            </div>
+
+            <form method="post" action="#" class="add-to-cart-form">
+                {% csrf_token %}
+                <div class="qty-wrap">
+                    <label for="qty">Quantity:</label>
+                    <input type="number" name="quantity" id="qty" value="1" min="1"
+                           {% if product.in_stock %}max="{{ product.inventory.quantity }}"{% endif %}
+                           class="form-control">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block"
+                        {% if not product.in_stock %}disabled{% endif %}>
+                    {% if product.in_stock %}Add to cart{% else %}Out of stock{% endif %}
+                </button>
+            </form>
+        </div>
+    </div>
+
+    {% if related_products %}
+        <section class="related-section">
+            <h2>Related products</h2>
+            <div class="products-grid">
+                {% for product in related_products %}
+                    <article class="product-card">
+                        <a href="{{ product.get_absolute_url }}" class="product-image">
+                            {% if product.image %}
+                                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                            {% else %}
+                                <div class="image-placeholder">No image</div>
+                            {% endif %}
+                        </a>
+                        <div class="product-body">
+                            <h4 class="product-name">
+                                <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
+                            </h4>
+                            <div class="product-price">
+                                <span class="price-current">${{ product.current_price }}</span>
+                            </div>
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        </section>
+    {% endif %}
+</div>
+{% endblock %}

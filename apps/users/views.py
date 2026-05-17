@@ -99,7 +99,7 @@ class UserListAPIView(generics.ListAPIView):
 
 def register_view(request):
     if request.user.is_authenticated:
-        return redirect("users:profile")
+        return redirect("products:list")
 
     if request.method == "POST":
         form = RegisterForm(request.POST)
@@ -107,7 +107,7 @@ def register_view(request):
             user = form.save()
             django_login(request, user)
             messages.success(request, "Your account has been created successfully!")
-            return redirect("users:profile")
+            return redirect("products:list")
     else:
         form = RegisterForm()
 
@@ -116,7 +116,7 @@ def register_view(request):
 
 def login_view(request):
     if request.user.is_authenticated:
-        return redirect("users:profile")
+        return redirect("products:list")
 
     if request.method == "POST":
         form = LoginForm(request.POST)
@@ -124,7 +124,7 @@ def login_view(request):
             user = form.cleaned_data["user"]
             django_login(request, user)
             messages.success(request, f"Welcome back, {user.full_name}!")
-            return redirect(request.GET.get("next") or "users:profile")
+            return redirect(request.GET.get("next") or "products:list")
     else:
         form = LoginForm()
 
