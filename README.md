@@ -76,7 +76,7 @@ ecommerce_api/
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/yourusername/ecommerce-api.git
+git clone https://github.com/jamsshid/ecommerce_api.git
 cd ecommerce-api
 ```
 

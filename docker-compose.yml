@@ -27,7 +27,7 @@ services:
     volumes:
       - .:/app
       - /app/.venv
-      - /app/staticfiles            # <-- anonymous, image ichidagi staticfiles ni "yopadi"
+      - /app/staticfiles            
     ports:
       - "8000:8000"
     environment:

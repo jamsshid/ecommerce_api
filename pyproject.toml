@@ -3,20 +3,19 @@ name = "ecommerce-api"
 version = "0.1.0"
 description = "E-Commerce platform with cart and payment gateway integration."
 readme = "README.md"
-requires-python = ">=3.14"
+requires-python = ">=3.12"
 dependencies = [
     "django>=6.0.5",
     "django-cors-headers>=4.9.0",
     "django-filter>=25.2",
     "djangorestframework>=3.17.1",
     "djangorestframework-simplejwt>=5.5.1",
-    "dotenv>=0.9.9",
+    "python-dotenv",
     "drf-spectacular>=0.29.0",
     "gunicorn>=26.0.0",
     "pillow>=12.2.0",
     "psycopg2-binary>=2.9.12",
     "requests>=2.34.2",
-    "ruff>=0.15.13",
     "stripe>=15.1.0",
     "whitenoise>=6.12.0",
 ]
