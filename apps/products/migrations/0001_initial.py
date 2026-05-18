@@ -6,79 +6,201 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Inventory',
+            name="Inventory",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('sku', models.CharField(max_length=64, unique=True, verbose_name='SKU')),
-                ('quantity', models.PositiveIntegerField(default=0, verbose_name='Quantity')),
-                ('low_stock_threshold', models.PositiveIntegerField(default=5, verbose_name='Low stock threshold')),
-                ('updated_at', models.DateTimeField(auto_now=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "sku",
+                    models.CharField(max_length=64, unique=True, verbose_name="SKU"),
+                ),
+                (
+                    "quantity",
+                    models.PositiveIntegerField(default=0, verbose_name="Quantity"),
+                ),
+                (
+                    "low_stock_threshold",
+                    models.PositiveIntegerField(
+                        default=5, verbose_name="Low stock threshold"
+                    ),
+                ),
+                ("updated_at", models.DateTimeField(auto_now=True)),
             ],
             options={
-                'verbose_name': 'Inventory',
-                'verbose_name_plural': 'Inventories',
+                "verbose_name": "Inventory",
+                "verbose_name_plural": "Inventories",
             },
         ),
         migrations.CreateModel(
-            name='ProductImage',
+            name="ProductImage",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('image', models.ImageField(upload_to='products/', verbose_name='Image')),
-                ('alt_text', models.CharField(blank=True, max_length=200, verbose_name='Alt text')),
-                ('order', models.PositiveSmallIntegerField(default=0, verbose_name='Order')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "image",
+                    models.ImageField(upload_to="products/", verbose_name="Image"),
+                ),
+                (
+                    "alt_text",
+                    models.CharField(
+                        blank=True, max_length=200, verbose_name="Alt text"
+                    ),
+                ),
+                (
+                    "order",
+                    models.PositiveSmallIntegerField(default=0, verbose_name="Order"),
+                ),
             ],
             options={
-                'verbose_name': 'Product image',
-                'verbose_name_plural': 'Product images',
-                'ordering': ['order', 'id'],
+                "verbose_name": "Product image",
+                "verbose_name_plural": "Product images",
+                "ordering": ["order", "id"],
             },
         ),
         migrations.CreateModel(
-            name='Category',
+            name="Category",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=150, verbose_name='Name')),
-                ('slug', models.SlugField(blank=True, max_length=160, unique=True, verbose_name='Slug')),
-                ('description', models.TextField(blank=True, verbose_name='Description')),
-                ('image', models.ImageField(blank=True, null=True, upload_to='categories/', verbose_name='Image')),
-                ('is_active', models.BooleanField(default=True, verbose_name='Active')),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('parent', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='children', to='products.category', verbose_name='Parent category')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=150, verbose_name="Name")),
+                (
+                    "slug",
+                    models.SlugField(
+                        blank=True, max_length=160, unique=True, verbose_name="Slug"
+                    ),
+                ),
+                (
+                    "description",
+                    models.TextField(blank=True, verbose_name="Description"),
+                ),
+                (
+                    "image",
+                    models.ImageField(
+                        blank=True,
+                        null=True,
+                        upload_to="categories/",
+                        verbose_name="Image",
+                    ),
+                ),
+                ("is_active", models.BooleanField(default=True, verbose_name="Active")),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                (
+                    "parent",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="children",
+                        to="products.category",
+                        verbose_name="Parent category",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Category',
-                'verbose_name_plural': 'Categories',
-                'ordering': ['name'],
+                "verbose_name": "Category",
+                "verbose_name_plural": "Categories",
+                "ordering": ["name"],
             },
         ),
         migrations.CreateModel(
-            name='Product',
+            name="Product",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=200, verbose_name='Name')),
-                ('slug', models.SlugField(blank=True, max_length=220, unique=True, verbose_name='Slug')),
-                ('description', models.TextField(blank=True, verbose_name='Description')),
-                ('price', models.DecimalField(decimal_places=2, default=Decimal('0.00'), max_digits=12, verbose_name='Price')),
-                ('discount_price', models.DecimalField(blank=True, decimal_places=2, max_digits=12, null=True, verbose_name='Discount price')),
-                ('image', models.ImageField(blank=True, null=True, upload_to='products/', verbose_name='Main image')),
-                ('is_active', models.BooleanField(default=True, verbose_name='Active')),
-                ('is_featured', models.BooleanField(default=False, verbose_name='Featured')),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('category', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='products', to='products.category', verbose_name='Category')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=200, verbose_name="Name")),
+                (
+                    "slug",
+                    models.SlugField(
+                        blank=True, max_length=220, unique=True, verbose_name="Slug"
+                    ),
+                ),
+                (
+                    "description",
+                    models.TextField(blank=True, verbose_name="Description"),
+                ),
+                (
+                    "price",
+                    models.DecimalField(
+                        decimal_places=2,
+                        default=Decimal("0.00"),
+                        max_digits=12,
+                        verbose_name="Price",
+                    ),
+                ),
+                (
+                    "discount_price",
+                    models.DecimalField(
+                        blank=True,
+                        decimal_places=2,
+                        max_digits=12,
+                        null=True,
+                        verbose_name="Discount price",
+                    ),
+                ),
+                (
+                    "image",
+                    models.ImageField(
+                        blank=True,
+                        null=True,
+                        upload_to="products/",
+                        verbose_name="Main image",
+                    ),
+                ),
+                ("is_active", models.BooleanField(default=True, verbose_name="Active")),
+                (
+                    "is_featured",
+                    models.BooleanField(default=False, verbose_name="Featured"),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "category",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="products",
+                        to="products.category",
+                        verbose_name="Category",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Product',
-                'verbose_name_plural': 'Products',
-                'ordering': ['-created_at'],
+                "verbose_name": "Product",
+                "verbose_name_plural": "Products",
+                "ordering": ["-created_at"],
             },
         ),
     ]

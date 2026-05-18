@@ -6,36 +6,50 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('products', '0001_initial'),
+        ("products", "0001_initial"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='product',
-            name='seller',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='products', to=settings.AUTH_USER_MODEL, verbose_name='Seller'),
+            model_name="product",
+            name="seller",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="products",
+                to=settings.AUTH_USER_MODEL,
+                verbose_name="Seller",
+            ),
         ),
         migrations.AddField(
-            model_name='inventory',
-            name='product',
-            field=models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='inventory', to='products.product'),
+            model_name="inventory",
+            name="product",
+            field=models.OneToOneField(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="inventory",
+                to="products.product",
+            ),
         ),
         migrations.AddField(
-            model_name='productimage',
-            name='product',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='images', to='products.product'),
+            model_name="productimage",
+            name="product",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="images",
+                to="products.product",
+            ),
         ),
         migrations.AddIndex(
-            model_name='product',
-            index=models.Index(fields=['-created_at'], name='products_pr_created_bce1a7_idx'),
+            model_name="product",
+            index=models.Index(
+                fields=["-created_at"], name="products_pr_created_bce1a7_idx"
+            ),
         ),
         migrations.AddIndex(
-            model_name='product',
-            index=models.Index(fields=['slug'], name='products_pr_slug_3edc0c_idx'),
+            model_name="product",
+            index=models.Index(fields=["slug"], name="products_pr_slug_3edc0c_idx"),
         ),
     ]

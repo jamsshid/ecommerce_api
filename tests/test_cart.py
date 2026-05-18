@@ -6,7 +6,7 @@ from unittest.mock import MagicMock, patch
 import pytest
 from django.urls import reverse
 
-from apps.cart.models import Cart, CartItem, Order, OrderItem, Payment
+from apps.cart.models import CartItem, Order, OrderItem, Payment
 
 
 @pytest.mark.django_db

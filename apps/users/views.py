@@ -16,6 +16,7 @@ from .serializers import (
     UserSerializer,
 )
 
+
 class RegisterAPIView(generics.CreateAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = RegisterSerializer
@@ -58,9 +59,7 @@ class LogoutAPIView(APIView):
             RefreshToken(refresh_token).blacklist()
         except Exception as e:
             return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-        return Response(
-            {"detail": "Logged out"}, status=status.HTTP_205_RESET_CONTENT
-        )
+        return Response({"detail": "Logged out"}, status=status.HTTP_205_RESET_CONTENT)
 
 
 class ProfileAPIView(generics.RetrieveUpdateAPIView):
@@ -83,7 +82,9 @@ class ChangePasswordAPIView(generics.UpdateAPIView):
         user = request.user
         user.set_password(serializer.validated_data["new_password"])
         user.save()
-        return Response({"detail": "Password changed successfully!"}, status=status.HTTP_200_OK)
+        return Response(
+            {"detail": "Password changed successfully!"}, status=status.HTTP_200_OK
+        )
 
 
 class UserListAPIView(generics.ListAPIView):
@@ -137,6 +138,7 @@ def logout_view(request):
     messages.info(request, "You have been logged out")
     return redirect("users:login")
 
+
 @login_required
 def profile_view(request):
     if request.method == "POST":
@@ -149,8 +151,7 @@ def profile_view(request):
         form = ProfileForm(instance=request.user)
 
     orders = (
-        request.user.orders
-        .select_related("payment")
+        request.user.orders.select_related("payment")
         .prefetch_related("items")
         .order_by("-created_at")[:20]
     )
